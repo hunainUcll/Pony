@@ -1,0 +1,48 @@
+package be.ucll.model;
+
+import jakarta.validation.constraints.*;
+
+public class Pony {
+
+
+    @NotBlank(message = "the pony name must not be empty")
+    @Size(min = 4,max = 20,message = "the name must be between 4 and 20 characters")
+    private String name;
+
+    @NotNull(message = "age cannot be null")
+    @Min(value = 0,message = "age cannot be less than 0")
+    @Max(value = 100,message = "Age cannot be more than 100")
+    private int age;
+
+    private int size;
+
+    public Pony(String name, int age,int size){
+        this.name = name;
+        this.age = age;
+        this.size = size;
+    }
+
+    public void updateNameAndAge(String name, int age,int size) {
+        this.name = name;
+        this.age = age;
+        this.size = size;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+
+}
+
+
+
+
