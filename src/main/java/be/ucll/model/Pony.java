@@ -14,6 +14,9 @@ public class Pony {
     @Max(value = 100,message = "Age cannot be more than 100")
     private int age;
 
+    @Min(value = 40, message = "a pony cannot be under 40cm")
+    @Max(value = 147,message = " a pony cannot be over 147 cm")
+    @NotNull(message = "size cannot be null")
     private int size;
 
     public Pony(String name, int age,int size){

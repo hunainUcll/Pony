@@ -5,6 +5,8 @@ import be.ucll.service.PonyService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -21,6 +23,19 @@ public class PonyController {
     public Map<String, String> handleRuntimeException(RuntimeException ex) {
         Map<String, String> errors = new HashMap<>();
         errors.put("error", ex.getMessage());
+        return errors;
+    }
+
+    //Story 20
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String,String> handleValidationException(MethodArgumentNotValidException ex ){
+        Map<String,String> errors = new HashMap<>();
+        for(FieldError error : ex.getFieldErrors()){
+            String fieldName = error.getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName,errorMessage);
+        }
         return errors;
     }
 
