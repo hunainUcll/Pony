@@ -1,9 +1,15 @@
 package be.ucll.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+@Entity
+@Table(name = "my_ponies")
 public class Pony {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
     @NotBlank(message = "the pony name must not be empty")
     @Size(min = 4,max = 20,message = "the name must be between 4 and 20 characters")
@@ -24,6 +30,9 @@ public class Pony {
         this.age = age;
         this.size = size;
     }
+    public  Pony(){}
+
+
 
     public void updateNameAndAge(String name, int age,int size) {
         this.name = name;

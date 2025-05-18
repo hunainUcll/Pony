@@ -18,30 +18,31 @@ public class PonyService {
     }
 
     public List<Pony> allPonies() {
-        return ponyRepository.allPonies();
+        return ponyRepository.findAll();
     }
 
     public Pony getPonyByName(String name) {
-        for (Pony pony : ponyRepository.allPonies()) {
-            if (pony.getName().equals(name)) {
-                return pony;
-            }
-        }
-        throw new RuntimeException("Pony with name '" + name + "' not found.");
+        return ponyRepository.findByName(name);
     }
 
     public Pony addPony(Pony pony) {
-        return ponyRepository.addPony(pony);
+        return ponyRepository.save(pony);
     }
 
     public Pony updatePony(String name, Pony newInformation) {
-        Pony pony = getPonyByName(name); // will throw if not found
+        Pony pony = getPonyByName(name);
+        if (pony == null) {
+            throw new RuntimeException("Pony not found with name: " + name);
+        }
         pony.updateNameAndAge(newInformation.getName(), newInformation.getAge(),newInformation.getSize());
+        ponyRepository.save(pony);
         return pony;
     }
 
     public void removePony(String name) {
-        Pony pony = getPonyByName(name); // will throw if not found
-        ponyRepository.removePony(pony);
+        Pony pony = getPonyByName(name);
+        if (pony != null) {
+            ponyRepository.delete(pony);
+        }
     }
 }
