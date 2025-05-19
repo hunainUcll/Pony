@@ -1,8 +1,19 @@
 DROP TABLE IF EXISTS my_ponies;
+DROP TABLE IF EXISTS owner;
+
+
+
+CREATE TABLE OWNER(
+ID BIGINT PRIMARY KEY AUTO_INCREMENT,
+NAME VARCHAR(255)
+);
 
 CREATE TABLE my_ponies(
                      ID BIGINT PRIMARY KEY AUTO_INCREMENT,
                      NAME VARCHAR(255),
                      AGE INT,
-                     SIZE INT
+                     SIZE INT,
+    OWNER_ID BIGINT,
+    FOREIGN KEY(OWNER_ID) REFERENCES OWNER
 );
+

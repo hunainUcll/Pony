@@ -1,7 +1,10 @@
 package be.ucll.service;
 
+import be.ucll.model.Owner;
 import be.ucll.model.Pony;
+import be.ucll.repository.OwnerRepository;
 import be.ucll.repository.PonyRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,9 @@ public class PonyService {
     private PonyRepository ponyRepository;
 
     @Autowired
+    private OwnerRepository ownerRepository;
+
+    @Autowired
     public PonyService(PonyRepository ponyRepository) {
         this.ponyRepository = ponyRepository;
     }
@@ -22,6 +28,7 @@ public class PonyService {
     }
 
     public Pony getPonyByName(String name) {
+
         return ponyRepository.findByName(name);
     }
 
@@ -44,5 +51,14 @@ public class PonyService {
         if (pony != null) {
             ponyRepository.delete(pony);
         }
+    }
+
+    public Pony addOwner(String name,  Owner owner) {
+        Pony pony = ponyRepository.findByName(name);
+        ownerRepository.save(owner);
+
+        pony.setOwner(owner);
+        ponyRepository.save(pony);
+        return pony;
     }
 }

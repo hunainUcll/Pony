@@ -1,7 +1,6 @@
-package be.ucll;
+package be.ucll.repository;
 
 import be.ucll.model.Pony;
-import be.ucll.repository.PonyRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,11 +17,9 @@ public class DbInitializer {
 
     @PostConstruct
     public void initialize() {
-            ponyRepository.save(new Pony("Bella", 5, 135));
-            ponyRepository.save(new Pony("Luna", 7, 140));
-            ponyRepository.save(new Pony("Angel", 12, 147));
+        ponyRepository.deleteAll(); // ensure a clean state if using a stub or in-memory db
 
+        ponyRepository.save(new Pony("Tornado", 5, 140));
+        ponyRepository.save(new Pony("Bella", 6, 135));
     }
-
 }
-

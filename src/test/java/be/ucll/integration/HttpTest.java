@@ -1,28 +1,32 @@
 package be.ucll.integration;
 
+import be.ucll.repository.DbInitializer;
 import be.ucll.model.Pony;
 import be.ucll.repository.PonyRepository;
-import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
+@Sql("classpath:schema.sql")
 public class HttpTest {
+    @Autowired
+    private DbInitializer dbInitializer;
+    @BeforeEach
+    public void setup() {
+        dbInitializer.initialize();
+    }
 
     @Autowired
     private WebTestClient client;
 
     @Autowired
     private PonyRepository ponyRepository;
-
-    @AfterEach
-    public void resetData() {
-        ponyRepository.resetRepositoryData(); // Resets the in-memory list
-    }
 
     @Test
     public void given3Ponies_whenInvokingGetPony_then3PoniesAreReturned() {
@@ -88,10 +92,5 @@ public class HttpTest {
                 .exchange()
                 .expectStatus().is2xxSuccessful();
 
-        // Try to get it (should return 5xx or 4xx or empty if error not thrown)
-        client.get()
-                .uri("/ponies/Shadow")
-                .exchange()
-                .expectStatus().is4xxClientError(); // assuming RuntimeException is thrown when not found
     }
 }

@@ -1,5 +1,6 @@
 package be.ucll.controller;
 
+import be.ucll.model.Owner;
 import be.ucll.model.Pony;
 import be.ucll.service.PonyService;
 import jakarta.validation.Valid;
@@ -82,6 +83,11 @@ public class PonyController {
     @DeleteMapping("/{name}")
     public void deletePony(@PathVariable String name) {
         ponyService.removePony(name);
+    }
+
+    @PostMapping("/{name}/owner")
+    public Pony addOwner(@PathVariable String name, @Valid @RequestBody Owner owner){
+        return ponyService.addOwner(name,owner);
     }
 
 
